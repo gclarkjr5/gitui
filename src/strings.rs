@@ -374,7 +374,7 @@ pub fn create_worktree_popup_title(
 pub fn create_worktree_popup_msg(
 	_key_config: &SharedKeyConfig,
 ) -> String {
-	"path (absolute, or relative to repo root — e.g. ../feature-x)"
+	"name (result will be ../{repo_name}.{worktree_name})"
 		.to_string()
 }
 pub fn open_repo_popup_title(
