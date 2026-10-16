@@ -1857,7 +1857,7 @@ pub mod commands {
 		CommandText::new(
 			format!(
 				"Create Worktree [{}]",
-				key_config.get_hint(key_config.keys.enter),
+				key_config.get_hint(key_config.keys.create_branch),
 			),
 			"create a new worktree",
 			CMD_GROUP_GENERAL,
