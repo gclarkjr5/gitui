@@ -1042,6 +1042,11 @@ impl App {
 				}
 				self.worktree_popup.update_worktrees()?;
 				flags.insert(NeedsUpdate::ALL);
+				self.queue.push(
+					InternalEvent::ConfirmAction(
+						Action::DeleteLocalBranch(name)
+					)
+				);
 			}
 			Action::DeleteRemoteBranch(branch_ref) => {
 				self.delete_remote_branch(&branch_ref)?;
