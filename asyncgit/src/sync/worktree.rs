@@ -154,7 +154,7 @@ pub fn create_worktree(
 	let repo_main_branch_path = repo.commondir().parent().ok_or_else(
 		|| {
 			Error::Generic(
-				"no parent directory".to_string()
+				"Error getting parent directory".to_string()
 			)
 		}
 	)?;
@@ -163,15 +163,15 @@ pub fn create_worktree(
 	// the ending of the above should give us repo_name
 	let repo_name = repo_main_branch_path.file_name().ok_or_else(
 		|| {
-			Error::Generic("error getting dir name".to_string())
+			Error::Generic("Error getting the file name out of the path".to_string())
 		}
-	)?.to_str().ok_or_else(|| {Error::Generic("error converting to str".to_string())})?;
+	)?.to_str().ok_or_else(|| {Error::Generic("Error converting the file name to a str".to_string())})?;
 
 
 	// get the parent of the repo so then we can concatenate the worktree
 	let repo_parent_dir = repo_main_branch_path.parent().ok_or_else(
 		|| {
-			Error::Generic("no parent directory".to_string())
+			Error::Generic("Error getting the parent directory".to_string())
 		})?;
 
 	// stitch the original repo name with the worktree name "/path/to/parent_of_repo/repo_name.worktree_name"
