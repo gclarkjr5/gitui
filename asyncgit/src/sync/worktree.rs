@@ -182,7 +182,6 @@ pub fn create_worktree(
 
 
 	let target = if requested.is_absolute() {
-		// println!("Main Branch at: {:?}, Repo Name: {:?}, Repo Parent Dir: {:?}, Full WT Name: {:?}, Full WT Path: {:?}", repo_main_branch_path, repo_name, repo_parent_dir, repo_with_new_worktree, requested);
 		requested
 	} else {
 		repo.workdir().ok_or(Error::NoWorkDir)?.join(requested)
@@ -203,7 +202,6 @@ pub fn create_worktree(
 		.ok_or_else(|| {Error::Generic("Error getting final bit of worktree name".to_string())})?;
 
 
-	// println!("Repo: {:?}, Requested: {:?}, Target: {:?}, Name: {:?}", repo_main, requested, target, name);
 	// libgit2 only creates the leaf directory, not missing parents
 	// (unlike `git worktree add`), so create the parent chain first
 	// to support nested paths such as `worktrees/foo`.
