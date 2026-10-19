@@ -141,6 +141,7 @@ pub struct KeysList {
 
 #[rustfmt::skip]
 impl Default for KeysList {
+	#[allow(clippy::too_many_lines)]
 	fn default() -> Self {
 		Self {
 			tab_status: GituiKeyEvent::new(KeyCode::Char('1'), KeyModifiers::empty()),

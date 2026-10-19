@@ -120,6 +120,7 @@ impl Component for BranchListPopup {
 
 	//TODO: cleanup
 	#[allow(clippy::cognitive_complexity)]
+	#[allow(clippy::too_many_lines)]
 	fn event(&mut self, ev: &Event) -> Result<EventState> {
 		if !self.visible {
 			return Ok(EventState::NotConsumed);
