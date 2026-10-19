@@ -426,19 +426,19 @@ pub fn delete_branch(
 
 	let repo = repo(repo_path)?;
 
-	let branch_as_ref_result = repo.find_reference(branch_ref);
-	
-	let branch_as_ref = if let Ok(bref) = branch_as_ref_result {
-		// first find the branch based on its ref passed
-		bref
-	} else {
-		// check if the name was supplied and get the ref from that
-		repo.find_branch(branch_ref, BranchType::Local)?.get().clone()
-		
-	};
+	// Try to find the branch by reference first, then by name
+	let branch_as_ref =
+		repo.find_reference(branch_ref).or_else(|_| {
+			repo.find_branch(branch_ref, BranchType::Local)
+				.map(|b| b.get().clone())
+		})?;
+
 	let mut branch = git2::Branch::wrap(branch_as_ref);
 	if branch.is_head() {
-		return Err(Error::Generic("You cannot be on the branch you want to delete, switch branch, then delete this branch".to_string()));
+		return Err(Error::Generic(
+			"cannot delete the currently checked out branch"
+				.to_string(),
+		));
 	}
 	branch.delete()?;
 	Ok(())

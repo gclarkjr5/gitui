@@ -374,8 +374,7 @@ pub fn create_worktree_popup_title(
 pub fn create_worktree_popup_msg(
 	_key_config: &SharedKeyConfig,
 ) -> String {
-	"name (result will be ../{repo_name}.{worktree_name})"
-		.to_string()
+	"name (result will be ../{repo_name}.{worktree_name})".to_string()
 }
 pub fn open_repo_popup_title(
 	_key_config: &SharedKeyConfig,
@@ -2034,7 +2033,8 @@ pub mod commands {
 		CommandText::new(
 			format!(
 				"Create as Worktree [{}]",
-				key_config.get_hint(key_config.keys.create_as_worktree),
+				key_config
+					.get_hint(key_config.keys.create_as_worktree),
 			),
 			"checkout branch",
 			CMD_GROUP_BRANCHES,

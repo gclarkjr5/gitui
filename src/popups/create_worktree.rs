@@ -71,7 +71,10 @@ impl Component for CreateWorktreePopup {
 			if let Event::Key(e) = ev {
 				if key_match(e, self.key_config.keys.enter) {
 					self.create_worktree();
-				} else if key_match(e, self.key_config.keys.open_branches){
+				} else if key_match(
+					e,
+					self.key_config.keys.open_branches,
+				) {
 					self.hide();
 					self.queue.push(InternalEvent::SelectBranch);
 				}
