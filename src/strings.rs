@@ -1864,6 +1864,32 @@ pub mod commands {
 		)
 	}
 
+	pub fn create_worktree_name_confirm_msg(
+		key_config: &SharedKeyConfig,
+	) -> CommandText {
+		CommandText::new(
+			format!(
+				"Create [{}]",
+				key_config.get_hint(key_config.keys.enter),
+			),
+			"create a new worktree",
+			CMD_GROUP_GENERAL,
+		)
+	}
+
+	pub fn create_worktree_from_branch_confirm_msg(
+		key_config: &SharedKeyConfig,
+	) -> CommandText {
+		CommandText::new(
+			format!(
+				"Create Worktree from Branch [{}]",
+				key_config.get_hint(key_config.keys.open_branches),
+			),
+			"create a worktree from an existing branch",
+			CMD_GROUP_GENERAL,
+		)
+	}
+
 	pub fn remove_worktree(
 		key_config: &SharedKeyConfig,
 	) -> CommandText {
@@ -1997,6 +2023,18 @@ pub mod commands {
 			format!(
 				"Checkout [{}]",
 				key_config.get_hint(key_config.keys.enter),
+			),
+			"checkout branch",
+			CMD_GROUP_BRANCHES,
+		)
+	}
+	pub fn create_as_worktree(
+		key_config: &SharedKeyConfig,
+	) -> CommandText {
+		CommandText::new(
+			format!(
+				"Create as Worktree [{}]",
+				key_config.get_hint(key_config.keys.create_as_worktree),
 			),
 			"checkout branch",
 			CMD_GROUP_BRANCHES,

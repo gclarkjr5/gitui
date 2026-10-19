@@ -981,6 +981,10 @@ impl App {
 			InternalEvent::CheckoutOption(branch) => {
 				self.checkout_option_popup.open(branch)?;
 			}
+			InternalEvent::ViewWorktrees => {
+				self.worktree_popup.open()?;
+				// self.checkout_option_popup.open(branch)?;
+			}
 		}
 
 		Ok(flags)
