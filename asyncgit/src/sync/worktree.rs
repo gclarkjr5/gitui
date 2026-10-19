@@ -2,7 +2,10 @@
 
 use std::path::{Path, PathBuf};
 
-use git2::{Repository, WorktreeLockStatus, WorktreePruneOptions};
+use git2::{
+	Repository, WorktreeAddOptions, WorktreeLockStatus,
+	WorktreePruneOptions,
+};
 use scopetime::scope_time;
 
 use super::status::{get_status, StatusType};
@@ -134,15 +137,15 @@ fn linked_worktree_info(
 	})
 }
 
-/// Creates a new linked worktree at `path_to_repo.worktree_path`, checking out a
-/// new branch named after the final path component.
+/// Creates a new linked worktree, checking out a branch (new or existing)
+/// named `worktree_name`.
 ///
-/// `worktree_path` may be absolute or relative to the repository's
-/// working directory. Returns the absolute path of the created
-/// worktree.
+/// The worktree is created as a sibling directory with the pattern
+/// `{repo_name}.{worktree_name}`. Returns the absolute path of the
+/// created worktree.
 pub fn create_worktree(
 	repo_path: &RepoPath,
-	worktree_path: &str,
+	worktree_name: &str,
 ) -> Result<PathBuf> {
 	scope_time!("create_worktree");
 
@@ -184,7 +187,7 @@ pub fn create_worktree(
 
 	// stitch the original repo name with the worktree name "/path/to/parent_of_repo/repo_name.worktree_name"
 	let repo_with_new_worktree =
-		format!("{repo_name}.{worktree_path}");
+		format!("{repo_name}.{worktree_name}");
 
 	// bring it all together to get "/path/to/parent_of_repo/repo_name.worktree_name"
 	let requested = repo_parent_dir.join(&repo_with_new_worktree);
@@ -219,7 +222,17 @@ pub fn create_worktree(
 		std::fs::create_dir_all(parent)?;
 	}
 
-	let worktree = repo.worktree(name, &target, None)?;
+	let mut worktree_options = WorktreeAddOptions::new();
+
+	if repo
+		.find_branch(worktree_name, git2::BranchType::Local)
+		.is_ok()
+	{
+		worktree_options.checkout_existing(true);
+	}
+
+	let worktree =
+		repo.worktree(name, &target, Some(&worktree_options))?;
 
 	Ok(worktree.path().to_path_buf())
 }

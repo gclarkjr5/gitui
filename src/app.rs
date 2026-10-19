@@ -1149,9 +1149,8 @@ impl App {
 				));
 			}
 			Err(e) => {
-				self.queue.push(InternalEvent::ShowErrorMsg(
-					e.to_string(),
-				));
+				self.queue
+					.push(InternalEvent::ShowErrorMsg(e.to_string()));
 			}
 		}
 		Ok(())
