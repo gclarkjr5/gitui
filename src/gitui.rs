@@ -243,6 +243,7 @@ mod tests {
 			notify_watcher: false,
 			key_bindings_path: None,
 			key_symbols_path: None,
+			cwd_file: None,
 		};
 
 		let theme = Theme::init(&PathBuf::new());

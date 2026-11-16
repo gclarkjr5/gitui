@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * worktrees: create worktree from an existing branch ([Ctrl+W] in branches popup)
 * worktrees: create worktree as sibling directory (e.g., `/path/to/repo.feature` instead of `/path/to/repo/worktrees/feature`)
+* `--cwd-file` option: on exit, write the working directory of the repo gitui switched to (e.g. a worktree), so a shell wrapper can `cd` there
 
 ### Changed
 * worktrees: prompt to delete associated local branch when removing a worktree

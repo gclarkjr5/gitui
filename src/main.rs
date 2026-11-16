@@ -197,6 +197,7 @@ fn main() -> Result<()> {
 	};
 
 	let mut args = cliargs;
+	let mut switched = false;
 
 	loop {
 		let quit_state = run_app(
@@ -218,13 +219,36 @@ fn main() -> Result<()> {
 					notify_watcher: args.notify_watcher,
 					key_bindings_path: args.key_bindings_path,
 					key_symbols_path: args.key_symbols_path,
-				}
+					cwd_file: args.cwd_file,
+				};
+				switched = true;
 			}
 			_ => break,
 		}
 	}
 
+	if switched {
+		write_cwd_file(&args);
+	}
+
 	Ok(())
+}
+
+/// Write the final repo's working directory to `--cwd-file`, so a
+/// shell wrapper can `cd` into the worktree/submodule gitui ended in.
+fn write_cwd_file(args: &CliArgs) {
+	let Some(file) = &args.cwd_file else {
+		return;
+	};
+
+	let result =
+		asyncgit::sync::utils::repo_work_dir(&args.repo_path)
+			.map_err(anyhow::Error::from)
+			.and_then(|dir| Ok(std::fs::write(file, dir)?));
+
+	if let Err(e) = result {
+		log::error!("failed to write cwd file: {e}");
+	}
 }
 
 fn run_app(

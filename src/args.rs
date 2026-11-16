@@ -22,6 +22,7 @@ const GIT_DIR_FLAG_ID: &str = "directory";
 const WATCHER_FLAG_ID: &str = "watcher";
 const KEY_BINDINGS_FLAG_ID: &str = "key_bindings";
 const KEY_SYMBOLS_FLAG_ID: &str = "key_symbols";
+const CWD_FILE_FLAG_ID: &str = "cwd_file";
 const DEFAULT_THEME: &str = "theme.ron";
 const DEFAULT_GIT_DIR: &str = ".";
 
@@ -33,6 +34,7 @@ pub struct CliArgs {
 	pub notify_watcher: bool,
 	pub key_bindings_path: Option<PathBuf>,
 	pub key_symbols_path: Option<PathBuf>,
+	pub cwd_file: Option<PathBuf>,
 }
 
 pub fn process_cmdline() -> Result<CliArgs> {
@@ -92,6 +94,10 @@ pub fn process_cmdline() -> Result<CliArgs> {
 		.get_one::<String>(KEY_SYMBOLS_FLAG_ID)
 		.map(PathBuf::from);
 
+	let cwd_file = arg_matches
+		.get_one::<String>(CWD_FILE_FLAG_ID)
+		.map(PathBuf::from);
+
 	Ok(CliArgs {
 		theme,
 		select_file,
@@ -99,6 +105,7 @@ pub fn process_cmdline() -> Result<CliArgs> {
 		notify_watcher,
 		key_bindings_path,
 		key_symbols_path,
+		cwd_file,
 	})
 }
 
@@ -188,6 +195,13 @@ fn app() -> ClapApp {
 				.short('w')
 				.long("workdir")
 				.env("GIT_WORK_TREE")
+				.num_args(1),
+		)
+		.arg(
+			Arg::new(CWD_FILE_FLAG_ID)
+				.help("On exit, write the working directory of the repo gitui switched to (e.g. a worktree) to this file, so a shell wrapper can cd there")
+				.long("cwd-file")
+				.value_name("CWD_FILE")
 				.num_args(1),
 		)
 }
